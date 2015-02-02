@@ -88,14 +88,9 @@ def depthFirstSearch(problem):
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
     "*** YOUR CODE HERE ***"
-    # util.raiseNotDefined()
-    # print "Start:", problem.getStartState()
-    # print "Is the start a goal?", problem.isGoalState(problem.getStartState())
-    # print "Start's successors:", problem.getSuccessors(problem.getStartState())
     fringe = util.Stack()
     fringe.push(problem.getStartState())
     closed = set()
-    action_list = []
     node_parent = {}
     node_parent_direction = {}
     def find_path(node):
@@ -104,20 +99,17 @@ def depthFirstSearch(problem):
             path.insert(0, node_parent_direction[node])
             node = node_parent[node]
         return path
-
     while not fringe.isEmpty():
         node = fringe.pop()
         if problem.isGoalState(node):
             return find_path(node)
         if node not in closed:
             closed.add(node)
-            #(successor, action, stepCost)
             for triple in problem.getSuccessors(node):
                 if triple[0] not in closed:
                     fringe.push(triple[0])
                     node_parent[triple[0]] = node
                     node_parent_direction[triple[0]] = triple[1]
-                    action_list.append(triple[1])
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
