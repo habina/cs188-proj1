@@ -128,17 +128,16 @@ def breadthFirstSearch(problem):
     while not fringe.isEmpty():
         node = fringe.pop()
         if problem.isGoalState(node):
-            print node_parent
-            print node_parent_direction
             return find_path(node)
         if node not in closed:
             closed.add(node)
-            # print problem.getSuccessors(node)
             for triple in problem.getSuccessors(node):
                 if triple[0] not in closed:
                     fringe.push(triple[0])
-                    node_parent[triple[0]] = node
-                    node_parent_direction[triple[0]] = triple[1]
+                    if triple[0] not in node_parent:
+                        node_parent[triple[0]] = node
+                        node_parent_direction[triple[0]] = triple[1]
+
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
