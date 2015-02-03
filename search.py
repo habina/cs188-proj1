@@ -62,7 +62,6 @@ class SearchProblem:
         """
         util.raiseNotDefined()
 
-
 def tinyMazeSearch(problem):
     """
     Returns a sequence of moves that solves tinyMaze.  For any other maze, the
@@ -89,7 +88,7 @@ def traverse(fringe, problem):
             visited.add(v[-1][0])
             suc = problem.getSuccessors(v[-1][0])
             for child in suc:
-                fringe.push(v + [child])
+                fringe.push(v + [(child[0], child[1], child[2] + v[-1][2])])
 
 def depthFirstSearch(problem):
     """
@@ -119,32 +118,9 @@ def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
     def func(item):
-        return item[2] + cur_cost
+        return item[-1][2]
     fringe = util.PriorityQueueWithFunction(func)
-    cur_cost = 0
-    fringe.push((problem.getStartState(), None, cur_cost))
-    closed = set()
-    node_parent = {}
-    node_parent_direction = {}
-    def find_path(node):
-        path = []
-        while node in node_parent:
-            path.insert(0, node_parent_direction[node])
-            node = node_parent[node]
-        return path
-    while not fringe.isEmpty():
-        cur_node = fringe.pop()
-        cur_cost += cur_node[2]
-        if problem.isGoalState(cur_node[0]):
-            return find_path(cur_node[0])
-        if cur_node[0] not in closed:
-            closed.add(cur_node[0])
-            for triple in problem.getSuccessors(cur_node[0]):
-                if triple[0] not in closed:
-                    fringe.push(triple)
-                    node_parent[triple[0]] = cur_node[0]
-                    node_parent_direction[triple[0]] = triple[1]
-
+    return traverse(fringe, problem)
 
 def nullHeuristic(state, problem=None):
     """
